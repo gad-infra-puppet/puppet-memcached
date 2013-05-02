@@ -9,7 +9,7 @@ class memcached(
   $udp_port        = 11211,
   $user            = $::memcached::params::user,
   $max_connections = '8192',
-  $facter          = '1.25',
+  $factor          = '1.25',
   $verbosity       = undef,
   $unix_socket     = undef,
   $install_dev     = false

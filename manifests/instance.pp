@@ -1,11 +1,11 @@
-define memcached::config (
+define memcached::instance (
   $max_memory      = false,
   $item_size       = false,
   $lock_memory     = false,
   $listen_ip       = '0.0.0.0',
   $tcp_port        = false,
   $max_connections = '8192',
-  $facter          = '1.25',
+  $factor          = '1.25',
   $verbosity       = undef,
   $unix_socket     = undef,
 ) {
