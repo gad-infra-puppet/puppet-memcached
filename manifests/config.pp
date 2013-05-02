@@ -5,6 +5,7 @@ class memcached::config (
   $listen_ip       = '0.0.0.0',
   $tcp_port        = false,
   $max_connections = '8192',
+  $facter          = '1.25',
   $verbosity       = undef,
   $unix_socket     = undef,
 ) inherits memcached::params {
