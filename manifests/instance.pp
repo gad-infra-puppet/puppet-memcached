@@ -1,4 +1,4 @@
-class memcached::config (
+define memcached::config (
   $max_memory      = false,
   $item_size       = false,
   $lock_memory     = false,
@@ -8,8 +8,9 @@ class memcached::config (
   $facter          = '1.25',
   $verbosity       = undef,
   $unix_socket     = undef,
-) inherits memcached::params {
-
+) {
+  include memcached::params
+  
   if $tcp_port {
     $udp_port = $tcp_port
     $real_name = "memcached_${tcp_port}"
