@@ -25,13 +25,19 @@ class memcached::config (
         mode    => '0755',
         content => template($memcached::params::init_tmpl),
         require => Package[$memcached::params::package_name];
-      "${memcached::params::default_file}_${tcp_port}":
+      "/usr/share/memcached/scripts/start-memcached_${tcp_port}":
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
-        source  => $memcached::params::default_src,
+        content => template($memcached::params::start_daemon_tmpl),
         require => Package[$memcached::params::package_name];
-      "${memcached::params::config_file}_${tcp_port}":
+      "${memcached::params::default_file}_${tcp_port}":
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template($memcached::params::default_src),
+        require => Package[$memcached::params::package_name];
+      "/etc/memcached_${tcp_port}.conf":
           owner   => 'root',
           group   => 'root',
           mode    => '0644',
@@ -44,7 +50,7 @@ class memcached::config (
         enable     => true,
         hasrestart => true,
         hasstatus  => false,
-        subscribe  => File["${memcached::params::config_file}_${tcp_port}"],
+        subscribe  => File["/etc/memcached_${tcp_port}.conf"],
       }
 
     }

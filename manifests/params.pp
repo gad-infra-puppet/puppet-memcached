@@ -10,6 +10,7 @@ class memcached::params {
       $init_tmpl        = "$module_name/memcached_init_debian.erb"
       $default_file     = "/etc/default/memcached"
       $default_src      = "$module_name/memcached_default"
+      $start_daemon_tmpl= "$module_name/start-memcached.erb"
       $user             = 'nobody'
     }
     'RedHat': {

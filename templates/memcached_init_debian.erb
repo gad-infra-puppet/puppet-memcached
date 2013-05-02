@@ -1,6 +1,6 @@
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides:		<%= real_name -%>
+# Provides:		<%= real_name %>
 # Required-Start:	$remote_fs $syslog
 # Required-Stop:	$remote_fs $syslog
 # Should-Start:		$local_fs
@@ -14,9 +14,9 @@
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/memcached
-DAEMONBOOTSTRAP=/usr/share/memcached/scripts/start-memcached
-NAME=<%= real_name -%>
-DESC=<%= real_name -%>
+DAEMONBOOTSTRAP=/usr/share/memcached/scripts/start-<%= real_name %>
+NAME=<%= real_name %>
+DESC=<%= real_name %>
 PIDFILE=/var/run/$NAME.pid
 
 test -x $DAEMON || exit 0
