@@ -4,11 +4,13 @@ define memcached::instance (
   $lock_memory     = false,
   $listen_ip       = '0.0.0.0',
   $tcp_port        = false,
+  $user            = $::memcached::params::user,
   $max_connections = '8192',
   $factor          = '1.25',
   $verbosity       = undef,
   $unix_socket     = undef,
 ) {
+
   include memcached::params
   
   if $tcp_port {
@@ -53,6 +55,7 @@ define memcached::instance (
         hasrestart => true,
         hasstatus  => false,
         subscribe  => File["/etc/memcached_${tcp_port}.conf"],
+        require    => File["${memcached::params::init_file}_${tcp_port}"],
       }
 
     }
