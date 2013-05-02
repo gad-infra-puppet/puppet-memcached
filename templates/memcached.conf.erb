@@ -4,10 +4,11 @@
 -d
 
 # pidfile
--P /var/run/memcached.pid
+
+-P /var/run/<%= real_name -%>.pid
 
 # Log memcached's output
-logfile <%= logfile -%>
+logfile /var/log/<%= real_name -%>.log
 
 <% if @verbosity -%>
 # Verbosity
