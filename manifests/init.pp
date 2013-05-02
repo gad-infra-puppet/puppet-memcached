@@ -25,54 +25,21 @@ class memcached(
     }
   }
 
-  if $tcp_port == 11211 {
-    $suffix = ""
-    $real_name = "memcached"
-  } else {
-    $udp_port = $tcp_port
-
-    $suffix = "_${tcp_port}"
-    $real_name = "memcached_${tcp_port}"
+  $real_name = "memcached"
+  
+  file { $memcached::params::config_file:
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template($memcached::params::config_tmpl),
+    require => Package[$memcached::params::package_name],
   }
 
-  case $::osfamily {
-    'Debian': {
-      file { 
-      "${memcached::params::init_file}${suffix}":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        content => template($memcached::params::init_tmpl),
-        require => Package[$memcached::params::package_name];
-      "${memcached::params::default_file}${suffix}":
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        source  => $memcached::params::default_src,
-        require => Package[$memcached::params::package_name];
-      "${memcached::params::config_file}${suffix}":
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0644',
-          content => template($memcached::params::config_tmpl),
-          require => Package[$memcached::params::package_name],
-      }
-
-      service { "${memcached::params::service_name}${suffix}":
-        ensure     => running,
-        enable     => true,
-        hasrestart => true,
-        hasstatus  => false,
-        subscribe  => File["${memcached::params::config_file}${suffix}"],
-      }
-
-    }
-    'RedHat': {
-      fail("Multiple memcached configuration is not yet supproted and tested.: ${::osfamily}")
-    }
-    default: {
-      fail("Unsupported platform: ${::osfamily}")
-    }
+  service { $memcached::params::service_name:
+    ensure     => running,
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => false,
+    subscribe  => File[$memcached::params::config_file],
   }
-
 }
