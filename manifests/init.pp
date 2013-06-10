@@ -12,7 +12,8 @@ class memcached(
   $factor          = '1.25',
   $verbosity       = undef,
   $unix_socket     = undef,
-  $install_dev     = false
+  $install_dev     = false,
+  $service_enabled = true,
 ) inherits memcached::params {
 
   package { $memcached::params::package_name:
@@ -36,11 +37,19 @@ class memcached(
     require => Package[$memcached::params::package_name],
   }
 
-  service { $memcached::params::service_name:
-    ensure     => running,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => false,
-    subscribe  => File[$memcached::params::config_file],
+  if $service_enabled {
+    service { $memcached::params::service_name:
+      ensure     => running,
+      enable     => true,
+      hasrestart => true,
+      hasstatus  => false,
+      subscribe  => File[$memcached::params::config_file],
+    }
+  } else {
+    service { $memcached::params::service_name:
+      ensure     => stopped,
+      enable     => false,
+    }    
   }
+
 }
